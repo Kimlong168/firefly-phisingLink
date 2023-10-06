@@ -5,23 +5,25 @@ import { useState } from "react";
 
 const Form = ({ handleEmail }) => {
   const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState(false);
-  const [showMsg, setShowMsg] = useState(false);
 
   function handleInputEmail(e) {
+    setErrorMessage("");
     setEmail(e.target.value);
     handleEmail(e.target.value);
-
-    if (!e.target.value.includes("@") || !e.target.value.includes(".com")) {
-      setMsg("Your email is invalid");
-    //   setShowMsg(true);
-    } else {
-      setMsg("");
-    }
-    if (email === "") {
-      setMsg("");
-    }
   }
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const validateEmail = () => {
+    // Regular expression to check for a valid email format
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    if (!email.match(emailPattern)) {
+      setErrorMessage("Please enter a valid email address.");
+    } else {
+      setErrorMessage("");
+    }
+  };
 
   return (
     <div className="grid place-items-center h-screen">
@@ -41,26 +43,31 @@ const Form = ({ handleEmail }) => {
               placeholder="Email or Phone"
               onChange={handleInputEmail}
               value={email}
+              onBlur={validateEmail}
             />
-            {/* {showMsg && (
-              <small className="w-full text-xs text-red-600 h-2 flex gap-2 items-center mt-1.5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="red"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-4 h-4 text-white"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-                  />
-                </svg>
-                Your email is invalid
-              </small>
-            )} */}
+
+            <small className="w-full text-xs text-red-600 h-2">
+              {errorMessage && (
+                <p className=" flex gap-2 items-center mt-1.5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="red"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-4 h-4 text-white"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                    />
+                  </svg>
+                  {errorMessage}
+                </p>
+              )}
+            </small>
+
             <div>
               <a href="#" className="text-blue-600 mt-1 text-sm font-semibold">
                 Forgot email?
@@ -81,17 +88,10 @@ const Form = ({ handleEmail }) => {
           <div className="flex justify-between items-center w-full mt-10">
             <div className="text-blue-600 cursor-pointer">Create account</div>
 
-            <Link
-              to={
-                msg === "" && email !== ""
-                  ? "/signin/challenge"
-                  : "/signin/identifier"
-              }
-            >
+            <Link to="/signin/challenge">
               <button
                 className="bg-blue-500 rounded-md text-white font-semibold px-5 py-1.5 hover:bg-blue-700"
-             
-                // disabled={msg === "" && email !== "" ? false : true}
+                disabled={errorMessage === "" && email !== "" ? false : true}
               >
                 Next
               </button>

