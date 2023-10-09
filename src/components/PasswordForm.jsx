@@ -1,7 +1,7 @@
 import googleLogo from "../assets/googleLogo.png";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { TextField } from "@mui/material";
@@ -15,7 +15,7 @@ const PasswordForm = ({ email }) => {
 
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState(false);
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
   const handlePassword = (password) => {
     setData({ ...data, password });
   };
