@@ -1,7 +1,7 @@
 import googleLogo from "../assets/googleLogo.png";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase-config";
@@ -13,10 +13,10 @@ const PasswordForm = ({ email }) => {
     password: "",
   });
   const [showPlaceholder, setShowPlaceholder] = useState(true);
-
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState(false);
   // let navigate = useNavigate();
+
   const handlePassword = (password) => {
     setData({ ...data, password });
   };
@@ -55,7 +55,7 @@ const PasswordForm = ({ email }) => {
             <div className="w-[120px] mx-auto mb-4">
               <img src={googleLogo} alt="google_logo" />
             </div>
-            <h2 className="font-semibold text-2xl mb-3">Welcome</h2>
+            <h2 className="text-2xl mb-3">Welcome</h2>
             <div className="flex gap-3 justify-center items-center border border-gray-300 rounded-full p-1 cursor-pointer hover:shadow">
               <div>
                 <svg
@@ -116,6 +116,7 @@ const PasswordForm = ({ email }) => {
               }}
               onClick={() => setShowPlaceholder(false)}
               // onBlur={validatePassword}
+           
             />
 
             {error && data.password.length < 8 && data.password.length > 0 && (
@@ -154,6 +155,7 @@ const PasswordForm = ({ email }) => {
                   checked={isChecked}
                   onChange={(e) => handleCheckboxChange(e)}
                   inputProps={{ "aria-label": "controlled" }}
+                  sx={{marginLeft: "-10px", marginRight:"-7px"}}
                 />
               </div>
               <div className="text-sm ml-3">

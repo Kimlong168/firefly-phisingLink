@@ -34,7 +34,7 @@ const Form = ({ handleEmail }) => {
             <div className="w-[120px] mx-auto mb-4">
               <img src={googleLogo} alt="google_logo" />
             </div>
-            <h2 className="font-semibold text-2xl mb-3">Sign in</h2>
+            <h2 className="text-2xl mb-3">Sign in</h2>
             <p>to continue to Google form</p>
           </div>
           <div className="w-full mt-12">
