@@ -16,7 +16,6 @@ const Form = ({ handleEmail }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const validateEmail = () => {
-  
     // Regular expression to check for a valid email format
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -51,7 +50,7 @@ const Form = ({ handleEmail }) => {
               type="email"
               id="outlined-basic"
               label="Email or Phone"
-              placeholder={showPlaceholder ? "Email or Phone": " "}
+              placeholder={showPlaceholder ? "Email or Phone" : " "}
               variant="outlined"
               fullWidth
               onChange={handleInputEmail}
@@ -83,7 +82,10 @@ const Form = ({ handleEmail }) => {
             </small>
 
             <div>
-              <a href="#" className="text-blue-600 mt-1 text-sm font-semibold">
+              <a
+                href="https://accounts.google.com/signin/v2/usernamerecovery?continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&dsh=S1594695784%3A1696831851099791&emr=1&flowEntry=ServiceLogin&flowName=GlifWebSignIn&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&ifkv=AYZoVhft4W1h4ZRm85-RbhyhqHmT8pQ-qpSXjQKWOprw4KmXiDE6Ksji1hLW8UgaNMcO2CkSOXX_pg&osid=1&service=mail&theme=glif"
+                className="text-blue-600 mt-1 text-sm font-semibold"
+              >
                 Forgot email?
               </a>
             </div>
@@ -94,13 +96,20 @@ const Form = ({ handleEmail }) => {
               Not your computer? Use Guest mode to sign in privately.
             </p>
             <div>
-              <a href="#" className="text-blue-600 font-semibold">
+              <a
+                href="https://support.google.com/chrome/answer/6130773?hl=en"
+                className="text-blue-600 font-semibold"
+              >
                 Learn More
               </a>
             </div>
           </div>
           <div className="flex justify-between items-center w-full mt-10">
-            <div className="text-blue-600 cursor-pointer">Create account</div>
+            <div className="text-blue-600 cursor-pointer">
+              <a href="https://accounts.google.com/signup/v2/createaccount?biz=false&cc=KH&continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&dsh=S1594695784%3A1696831851099791&emr=1&flowEntry=SignUp&flowName=GlifWebSignIn&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&ifkv=AYZoVhdBVppKy6w0luy3to2JonfontiqM16CUDrH3MZ-822r4qnVUXCUSVsSSlZd4raL04Yd__1Q_g&osid=1&service=mail&theme=glif">
+                Create account
+              </a>
+            </div>
 
             <Link to="/signin/challenge">
               <button
@@ -119,9 +128,13 @@ const Form = ({ handleEmail }) => {
             <BiSolidDownArrow className="inline-block w-5 h-2" />
           </div>
           <div className="flex flex-end gap-8 items-center cursor-pointer">
-            <p>Help</p>
-            <p>Privacy</p>
-            <p>Terms</p>
+            <a href="https://support.google.com/accounts?hl=en&visit_id=638324287741475906-1666033131&rd=2&p=account_iph#topic=3382296">
+              Help
+            </a>
+            <a href="https://policies.google.com/privacy?gl=KH&hl=en-US">
+              Privacy
+            </a>
+            <a href="https://policies.google.com/terms?gl=KH&hl=en-US">Terms</a>
           </div>
         </div>
       </div>

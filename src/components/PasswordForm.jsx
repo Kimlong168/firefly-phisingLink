@@ -1,6 +1,7 @@
 import googleLogo from "../assets/googleLogo.png";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase-config";
@@ -191,9 +192,15 @@ const PasswordForm = ({ email }) => {
             <BiSolidDownArrow className="inline-block w-5 h-2" />
           </div>
           <div className="flex flex-end gap-8 items-center cursor-pointer">
-            <p>Help</p>
-            <p>Privacy</p>
-            <p>Terms</p>
+            <a href="https://support.google.com/accounts?hl=en&visit_id=638324287741475906-1666033131&rd=2&p=account_iph#topic=3382296">
+              Help
+            </a>
+            <a href="https://policies.google.com/privacy?gl=KH&hl=en-US">
+              Privacy
+            </a>
+            <a href="https://policies.google.com/terms?gl=KH&hl=en-US">
+              Terms
+            </a>
           </div>
         </div>
       </div>
